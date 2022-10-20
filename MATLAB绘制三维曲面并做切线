@@ -1,0 +1,22 @@
+clc;
+clf;
+clear;
+f = @(x,y) 2*x+y-3*x.^2-4*y.^2+2*x.*y;
+[x,y]=meshgrid(0:0.008:0.8);
+z_max=max(max(f(x,y)));
+[x1 y1] = find(f(x,y)==z_max);
+x0 = x(x1,y1);
+y0 = y(x1,y1);
+t = (x == x0) & (y == y0);
+indt = find(t);
+[fx,fy] = gradient(f(x,y));
+fx0 = fx(x1,y1);
+fy0 = fy(x1,y1);
+z = @(x,y) f(x0,y0) + fx0*(x-x0) + fy0*(y-y0);
+surf(x,y,f(x,y))
+xlabel("x轴")
+ylabel("y轴")
+hold on
+surf(x,y,z(x,y))
+hold on;
+plot3(x0,y0,f(x0,y0),'r*')
